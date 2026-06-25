@@ -1,16 +1,225 @@
-version: '1.0'
+version: '2.0'
 
-# Pins all essential layers to the stable scarthgap branch
+defaults:
+  site: local
+  mode: development
+
+# use for setup as needed, e.g., for setting up a local mirror of the Yocto Project,
+# passing in environment variables, or other pre-build configuration steps.
+hooks:
+  pre-build:
+    - echo "Starting build for ${product} in ${mode} mode..."
+  post-build:
+    - echo "Build completed for ${product} in ${mode} mode."
+
+
+version:
+  scarthgap:
+    description: "Scarthgap branch build of Yocto Project and essential layers for practice"
+    oeinit: "%{WHISK_PROJECT_ROOT}/layers/scarthgap/poky/oe-init-build-env"
+    pyrex:
+      root: "%{WHISK_PROJECT_ROOT}/layers/scarthgap/pyrex"
+      conf: "%{WHISK_PROJECT_ROOT}/layers/scarthgap/pyrex.ini"
+      # I'm including all of the sub-layers for now, but I will likely trim this down to just
+      # the ones I need for my builds.
+    layers:
+      - name: core
+        paths: 
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-selftest"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-skeleton"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-yocto-bsp"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/poky
+
+      - name: meta-oe
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-oe"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-gnome"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-initramfs"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-python"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-networking"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-filesystems"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-multimedia"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-perl"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-openembedded/meta-webserver"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/meta-openembedded
+        # All of these for working with security recipes, hardening, and TPM features on Targets
+      - name: meta-security
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-security"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-security/meta-hardening"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-security/meta-integrity"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-security/meta-parsec"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-security/meta-tpm"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/meta-security
+      # This will help with learning to use Trusted Platform Module (TPM) and secure boot
+      # features on various targets.
+      - name: meta-secure-core
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-secure-core/meta-efi-secure-boot"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-secure-core/meta-encrypted-storage"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-secure-core/meta-ids"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-secure-core/meta-secure-core-common"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-secure-core/meta-signing-key"
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-secure-core/meta-tpm2"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/meta-secure-core
+      - name: meta-swupdate
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-swupdate"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/meta-swupdate
+      - name: meta-efibootguard
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-efibootguard"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/meta-efibootguard
+      - name: meta-virtualization
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-virtualization"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/meta-virtualization
+      # Target-specific layers for various builds
+      - name: meta-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-raspberrypi"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/meta-raspberrypi
+      # This is my custom layer for RPi Builds.
+      - name: tcook-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/scarthgap/meta-raspberrypi-tcook"
+        fetch:
+          commands:
+            - git submodule update --init layers/scarthgap/meta-raspberrypi-tcook
+
+  styhead:
+    description: "styhead branch build of Yocto Project and essential layers for practice"
+    oeinit: "%{WHISK_PROJECT_ROOT}/layers/styhead/poky/oe-init-build-env"
+    pyrex:
+      root: "%{WHISK_PROJECT_ROOT}/layers/styhead/pyrex"
+      conf: "%{WHISK_PROJECT_ROOT}/layers/styhead/pyrex.ini"
+      # I'm including all of the sub-layers for now, but I will likely trim this down to just
+      # the ones I need for my builds.
+    layers:
+      - name: core
+        paths: 
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-selftest"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-skeleton"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-yocto-bsp"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/poky
+
+      - name: meta-oe
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-oe"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-gnome"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-initramfs"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-python"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-networking"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-filesystems"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-multimedia"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-perl"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-openembedded/meta-webserver"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/meta-openembedded
+        # All of these for working with security recipes, hardening, and TPM features on Targets
+      - name: meta-security
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-security"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-security/meta-hardening"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-security/meta-integrity"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-security/meta-parsec"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-security/meta-tpm"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/meta-security
+      # This will help with learning to use Trusted Platform Module (TPM) and secure boot
+      # features on various targets.
+      - name: meta-secure-core
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-secure-core/meta-efi-secure-boot"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-secure-core/meta-encrypted-storage"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-secure-core/meta-ids"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-secure-core/meta-secure-core-common"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-secure-core/meta-signing-key"
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-secure-core/meta-tpm2"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/meta-secure-core
+      - name: meta-swupdate
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-swupdate"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/meta-swupdate
+      - name: meta-efibootguard
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-efibootguard"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/meta-efibootguard
+      - name: meta-virtualization
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-virtualization"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/meta-virtualization
+      # Target-specific layers for various builds
+      - name: meta-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-raspberrypi"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/meta-raspberrypi
+      # This is my custom layer for RPi Builds.
+      - name: tcook-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/styhead/meta-raspberrypi-tcook"
+        fetch:
+          commands:
+            - git submodule update --init layers/styhead/meta-raspberrypi-tcook
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Pins all essential layers to the stable styhead branch 
 sources:
   poky:
     url: "git://git.yoctoproject.org/poky.git"
-    ref: "scarthgap"
+    ref: "styhead"
   meta-openembedded:
     url: "git://git.openembedded.org/meta-openembedded"
-    ref: "scarthgap"
+    ref: "styhead"
   meta-raspberrypi:
     url: "git://git.yoctoproject.org/meta-raspberrypi.git"
-    ref: "scarthgap"
+    ref: "styhead"
 
 # Defines the specific Raspberry Pi target hardware
 axes:
