@@ -31,9 +31,10 @@ for LAYER in "${!LAYER_LIST[@]}"; do
     LAYER_URL="${LAYER_LIST[$LAYER]}"
     LAYER_DIR="${VERSION_BASE_DIR}/${LAYER}"
 
-    BRANCHES=$(git ls-remote --heads "${LAYER_URL}" | awk '{print $2}' | sed 's/refs\/heads\///')
+    declare -a BRANCHES <<< $(git ls-remote --heads "${LAYER_URL}" | awk '{print $2}' | sed 's/refs\/heads\///')
 
-    echo "${BRANCHES}" | grep ${NEW_VERSION} || echo "No matching branch found for ${NEW_VERSION}"
+    echo "Available branches for ${LAYER}:" && \
+    echo "${BRANCHES[@]}" | grep ${NEW_VERSION} || echo "No matching branch found for ${NEW_VERSION}"
 
     if [[ ! " ${BRANCHES[@]} " =~ " ${NEW_VERSION} " ]]; then
         echo "Branch ${NEW_VERSION} does not exist for ${LAYER}. Setting to master."
