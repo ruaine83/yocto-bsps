@@ -14,10 +14,10 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-NEW_VERSION=$1
-VERSION_BASE_DIR="../layers/${NEW_VERSION}"
-
 source ./scripts/sources/base-layer-list
+
+NEW_VERSION=$1
+VERSION_BASE_DIR="./layers/${NEW_VERSION}"
 
 if ! [ -d "${VERSION_BASE_DIR}" ]; then
     echo "Creating new version directory: ${VERSION_BASE_DIR}"
@@ -42,7 +42,7 @@ for LAYER in "${!LAYER_LIST[@]}"; do
 
     if ! [ -d "${LAYER_DIR}" ]; then
         echo "Cloning ${LAYER} from ${LAYER_URL} into ${LAYER_DIR}"
-        echo "git clone -b \"${NEW_VERSION}\" \"${LAYER_URL}\" \"${LAYER_DIR}\""
+        echo "git clone -b \"${NEW_VERSION}\" \"${LAYER_URL}\" \"${VERSION_BASE_DIR}/${LAYER}\""
     else
         echo "Layer directory already exists: ${LAYER_DIR}"
     fi
