@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# This file is to be sourced to set values for the name and git URL for the various base layers
+
+declare -A LAYER_LIST
+
+LAYER_LIST["meta-raspberrypi"]="https://git.yoctoproject.org/meta-raspberrypi.git"
+LAYER_LIST["meta-raspberrypi-tcook"]="git@github.com:ruaine83/meta-raspberrypi-tcook.git"
+LAYER_LIST["meta-openembedded"]="git@github.com:openembedded/meta-openembedded.git"
+LAYER_LIST["meta-arm"]="https://git.yoctoproject.org/meta-arm.git"
+LAYER_LIST["meta-security"]="https://git.yoctoproject.org/meta-security.git"
+LAYER_LIST["meta-swupdate"]="git@github.com:sbabic/meta-swupdate.git"
+LAYER_LIST["meta-virtualization"]="https://git.yoctoproject.org/meta-virtualization.git"
