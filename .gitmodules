@@ -7,3 +7,39 @@
 [submodule "layers/scarthgap/meta-secure-core"]
 	path = layers/scarthgap/meta-secure-core
 	url = git@github.com:ruaine83/meta-secure-core.git
+[submodule "layers/open-source/meta-security"]
+	path = layers/open-source/meta-security
+	url = https://git.yoctoproject.org/meta-security.git
+	branch = scarthgap
+[submodule "layers/open-source/meta-swupdate"]
+	path = layers/open-source/meta-swupdate
+	url = git@github.com:sbabic/meta-swupdate.git
+	branch = scarthgap
+[submodule "layers/common/meta-raspberrypi-tcook"]
+	path = layers/common/meta-raspberrypi-tcook
+	url = git@github.com:ruaine83/meta-raspberrypi-tcook.git
+	branch = master
+[submodule "layers/open-source/poky"]
+	path = layers/open-source/poky
+	url = https://git.yoctoproject.org/poky.git
+	branch = scarthgap
+[submodule "layers/open-source/meta-virtualization"]
+	path = layers/open-source/meta-virtualization
+	url = https://git.yoctoproject.org/meta-virtualization.git
+	branch = scarthgap
+[submodule "layers/open-source/meta-openembedded"]
+	path = layers/open-source/meta-openembedded
+	url = git@github.com:openembedded/meta-openembedded.git
+	branch = scarthgap
+[submodule "layers/open-source/meta-raspberrypi"]
+	path = layers/open-source/meta-raspberrypi
+	url = https://git.yoctoproject.org/meta-raspberrypi.git
+	branch = scarthgap
+[submodule "layers/open-source/meta-arm"]
+	path = layers/open-source/meta-arm
+	url = https://git.yoctoproject.org/meta-arm.git
+	branch = scarthgap
+[submodule "layers/open-source/meta-secure-core"]
+	path = layers/open-source/meta-secure-core
+	url = git@github.com:Wind-River/meta-secure-core.git
+	branch = scarthgap
