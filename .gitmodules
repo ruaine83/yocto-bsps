@@ -1,17 +1,17 @@
 [submodule "layers/meta-openembedded"]
-	path = layers/meta-openembedded
+	path = layers/scarthgap/meta-openembedded
 	url = https://git.openembedded.org/meta-openembedded
 	branch = scarthgap
 [submodule "layers/meta-raspberrypi"]
-	path = layers/meta-raspberrypi
+	path = layers/scarthgap/meta-raspberrypi
 	url = https://git.yoctoproject.org/meta-raspberrypi.git
 	branch = scarthgap
 [submodule "layers/poky"]
-	path = layers/poky
+	path = layers/scarthgap/poky
 	url = https://git.yoctoproject.org/poky
 	branch = scarthgap
 [submodule "layers/meta-raspberry-pi-tcook"]
-	path = layers/meta-raspberry-pi-tcook
+	path = layers/scarthgap/meta-raspberrypi-tcook
 	url = git@github.com:ruaine83/meta-raspberry-pi-tcook.git
 [submodule "whisk"]
 	path = whisk
