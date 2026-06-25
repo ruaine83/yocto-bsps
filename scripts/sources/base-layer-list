@@ -4,11 +4,15 @@
 
 declare -A LAYER_LIST
 
-LAYER_LIST["meta-raspberrypi"]="https://git.yoctoproject.org/meta-raspberrypi.git"
-LAYER_LIST["meta-raspberrypi-tcook"]="git@github.com:ruaine83/meta-raspberrypi-tcook.git"
-LAYER_LIST["meta-openembedded"]="git@github.com:openembedded/meta-openembedded.git"
-LAYER_LIST["meta-arm"]="https://git.yoctoproject.org/meta-arm.git"
-LAYER_LIST["meta-security"]="https://git.yoctoproject.org/meta-security.git"
-LAYER_LIST["meta-swupdate"]="git@github.com:sbabic/meta-swupdate.git"
-LAYER_LIST["meta-virtualization"]="https://git.yoctoproject.org/meta-virtualization.git"
-LAYER_LIST["meta-secure-core"]="git@github.com:Wind-River/meta-secure-core.git"
+# Open Source Layers
+LAYER_LIST["open-source/poky"]="https://git.yoctoproject.org/poky.git"
+LAYER_LIST["open-source/meta-raspberrypi"]="https://git.yoctoproject.org/meta-raspberrypi.git"
+LAYER_LIST["open-source/meta-openembedded"]="git@github.com:openembedded/meta-openembedded.git"
+LAYER_LIST["open-source/meta-arm"]="https://git.yoctoproject.org/meta-arm.git"
+LAYER_LIST["open-source/meta-security"]="https://git.yoctoproject.org/meta-security.git"
+LAYER_LIST["open-source/meta-swupdate"]="git@github.com:sbabic/meta-swupdate.git"
+LAYER_LIST["open-source/meta-virtualization"]="https://git.yoctoproject.org/meta-virtualization.git"
+LAYER_LIST["open-source/meta-secure-core"]="git@github.com:Wind-River/meta-secure-core.git"
+
+# My Layers to be added to the build in ./commmon/
+LAYER_LIST["common/meta-raspberrypi-tcook"]="git@github.com:ruaine83/meta-raspberrypi-tcook.git"

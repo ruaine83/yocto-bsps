@@ -14,44 +14,55 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-source ./scripts/sources/base-layer-list
+source scripts/sources/base-layer-list
 
 NEW_VERSION=$1
-VERSION_BASE_DIR="./layers/${NEW_VERSION}"
+BASE_LAYERS_DIR="layers"
 
-if ! [ -d "${VERSION_BASE_DIR}" ]; then
-    echo "Creating new version directory: ${VERSION_BASE_DIR}"
-    mkdir -p "${VERSION_BASE_DIR}"
+if ! [ -d "${BASE_LAYERS_DIR}" ]; then
+    echo "Creating new version directory: ${BASE_LAYERS_DIR}"
+    mkdir -p "${BASE_LAYERS_DIR}"
 else
-    echo "Version directory already exists: ${VERSION_BASE_DIR}"
+    echo "Version directory already exists: ${BASE_LAYERS_DIR}"
 fi
 
+USER_VERSION=${NEW_VERSION}
 
 for LAYER in "${!LAYER_LIST[@]}"; do
     LAYER_URL="${LAYER_LIST[$LAYER]}"
-    LAYER_DIR="${VERSION_BASE_DIR}/${LAYER}"
+    LAYER_DIR="${BASE_LAYERS_DIR}/${LAYER}"
 
-    declare -a BRANCHES <<< $(git ls-remote --heads "${LAYER_URL}" | awk '{print $2}' | sed 's/refs\/heads\///')
+    NEW_VERSION=${USER_VERSION}
 
-    echo "Available branches for ${LAYER}:" && \
-    echo "${BRANCHES[@]}" | grep ${NEW_VERSION} || echo "No matching branch found for ${NEW_VERSION}"
+    #echo "Looking for ${NEW_VERSION} branch for ${LAYER} at ${LAYER_URL}"
+
+    BRANCHES=()
+    while IFS= read -r line; do
+        BRANCHES+=("$line")
+    done < <(git ls-remote --heads "${LAYER_URL}" --h --sort origin "refs/heads/*" | awk -F'/' '{print $3}')
 
     if [[ ! " ${BRANCHES[@]} " =~ " ${NEW_VERSION} " ]]; then
-        echo "Branch ${NEW_VERSION} does not exist for ${LAYER}. Setting to master."
+        #echo "Branch ${NEW_VERSION} does not exist for ${LAYER}. Setting to master."
         NEW_VERSION="master"
     fi
 
-    if ! [ -d "${LAYER_DIR}" ]; then
-        echo "Cloning ${LAYER} from ${LAYER_URL} into ${LAYER_DIR}"
-        echo "git clone -b \"${NEW_VERSION}\" \"${LAYER_URL}\" \"${VERSION_BASE_DIR}/${LAYER}\""
+    echo "Cheking for $(dirname "${LAYER_DIR}")"
+
+    if ! [ -d "$(dirname "${LAYER_DIR}")" ]; then
+        echo "Creating directory for layer: $(dirname "${LAYER_DIR}")"
+        mkdir -p "$(dirname "${LAYER_DIR}")"
     else
+        echo "Directory for layer already exists: $(dirname "${LAYER_DIR}")"
+    fi
+    
+    if ! [ -d "${LAYER_DIR}" ]; then
+        echo "Cloning submodule ${LAYER} branch ${NEW_VERSION} from ${LAYER_URL} into ${LAYER_DIR}"
+        echo "git clone -b \"${NEW_VERSION}\" \"${LAYER_URL}\" \"${LAYER_DIR}\""
+        git submodule add -b "${NEW_VERSION}" "${LAYER_URL}" "${LAYER_DIR}"
+    else
+        git submodule update --init "${LAYER_DIR}"
         echo "Layer directory already exists: ${LAYER_DIR}"
     fi
-
-    # Change to the layer directory and fetch the latest changes
-    #pushd "${LAYER_DIR}" > /dev/null
-    echo git fetch --all
-    echo git checkout "${NEW_VERSION}"
-    echo git pull origin "${NEW_VERSION}"
-    #popd > /dev/null
 done
+
+echo "Done"
