@@ -1,0 +1,43 @@
+version: '1.0'
+
+# Pins all essential layers to the stable scarthgap branch
+sources:
+  poky:
+    url: "git://git.yoctoproject.org/poky.git"
+    ref: "scarthgap"
+  meta-openembedded:
+    url: "git://git.openembedded.org/meta-openembedded"
+    ref: "scarthgap"
+  meta-raspberrypi:
+    url: "git://git.yoctoproject.org/meta-raspberrypi.git"
+    ref: "scarthgap"
+
+# Defines the specific Raspberry Pi target hardware
+axes:
+  product:
+    choices:
+      pi3:
+        description: "Raspberry Pi 3 32-bit Target"
+        
+        variables:
+          MACHINE: "raspberrypi3"
+      pi3b:
+        description: "Raspberry Pi 3B 64-bit Target"
+        variables:
+          MACHINE: "raspberrypi3b-64"
+      pi4:
+        description: "Raspberry Pi 4 64-bit Target"
+        variables:
+          MACHINE: "raspberrypi4-64"
+      pi5:
+        description: "Raspberry Pi 5 64-bit Target"
+        variables:
+          MACHINE: "raspberrypi5"
+  mode:
+    choices:
+      development:
+        description: "Debug build with root access"
+        variables:
+          EXTRA_IMAGE_FEATURES: "debug-tweaks"
+      production:
+        description: "Hardened user production build"
