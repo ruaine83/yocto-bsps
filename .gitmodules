@@ -43,3 +43,6 @@
 [submodule "whisk"]
 	path = whisk
 	url = https://github.com/garmin/whisk.git
+[submodule "layers/common/meta-tcook-common"]
+	path = layers/common/meta-tcook-common
+	url = https://github.com/ruaine83/meta-tcook-common.git
