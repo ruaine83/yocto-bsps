@@ -57,7 +57,6 @@ for LAYER in "${!LAYER_LIST[@]}"; do
     
     if ! [ -d "${LAYER_DIR}" ]; then
         echo "Cloning submodule ${LAYER} branch ${NEW_VERSION} from ${LAYER_URL} into ${LAYER_DIR}"
-        echo "git clone -b \"${NEW_VERSION}\" \"${LAYER_URL}\" \"${LAYER_DIR}\""
         git submodule add --force -b "${NEW_VERSION}" "${LAYER_URL}" "${LAYER_DIR}"
     else
         git submodule update --init "${LAYER_DIR}"

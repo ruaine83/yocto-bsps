@@ -16,3 +16,4 @@ LAYER_LIST["open-source/meta-secure-core"]="git@github.com:Wind-River/meta-secur
 
 # My Layers to be added to the build in ./commmon/
 LAYER_LIST["common/meta-raspberrypi-tcook"]="git@github.com:ruaine83/meta-raspberrypi-tcook.git"
+LAYER_LIST["common/meta-tcook-common"]="git@github.com:ruaine83/meta-tcook-common.git"

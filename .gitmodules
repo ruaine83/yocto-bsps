@@ -15,10 +15,6 @@
 	path = layers/open-source/meta-swupdate
 	url = git@github.com:sbabic/meta-swupdate.git
 	branch = scarthgap
-[submodule "layers/common/meta-raspberrypi-tcook"]
-	path = layers/common/meta-raspberrypi-tcook
-	url = git@github.com:ruaine83/meta-raspberrypi-tcook.git
-	branch = master
 [submodule "layers/open-source/poky"]
 	path = layers/open-source/poky
 	url = https://git.yoctoproject.org/poky.git
@@ -34,7 +30,7 @@
 [submodule "layers/open-source/meta-raspberrypi"]
 	path = layers/open-source/meta-raspberrypi
 	url = https://git.yoctoproject.org/meta-raspberrypi.git
-	branch = scarthgap
+	branch = wrynose
 [submodule "layers/open-source/meta-arm"]
 	path = layers/open-source/meta-arm
 	url = https://git.yoctoproject.org/meta-arm.git
@@ -43,3 +39,7 @@
 	path = layers/open-source/meta-secure-core
 	url = git@github.com:Wind-River/meta-secure-core.git
 	branch = scarthgap
+[submodule "layers/common/meta-raspberrypi-tcook"]
+	path = layers/common/meta-raspberrypi-tcook
+	url = git@github.com:ruaine83/meta-raspberrypi-tcook.git
+	branch = master

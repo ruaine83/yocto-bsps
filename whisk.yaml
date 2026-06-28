@@ -1,0 +1,439 @@
+version: 2.0
+
+defaults:
+  site: local
+  mode: development
+
+# use for setup as needed, e.g., for setting up a local mirror of the Yocto Project,
+# passing in environment variables, or other pre-build configuration steps.
+hooks:
+  pre_init: |
+    echo "Starting build for ${product} in ${mode} mode..."
+    source %{WHISK_PROJECT_ROOT}/scripts/generate_sw_versions.sh export
+    #
+    #
+    PYREX_CONFIG_BIND="%{WHISK_PROJECT_ROOT} ~/.ssh/"
+    export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} \
+    NDDSHOME \
+    RPI#_VERSION RPI$_VERSION RPI%_VERSION "
+
+versions:
+  blacksail:
+    description: "blacksail branch build of Yocto Project and essential layers for practice"
+    oeinit: "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/oe-init-build-env"
+    pyrex:
+      root: "%{WHISK_PROJECT_ROOT}/layers/pyrex"
+      conf: "%{WHISK_PROJECT_ROOT}/layers/pyrex.ini"
+      # I'm including all of the sub-layers for now, but I will likely trim this down to just
+      # the ones I need for my builds.
+    layers:
+      - name: core
+        paths: 
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-selftest"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-skeleton"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-yocto-bsp"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/poky
+
+      - name: meta-oe
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-initramfs"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-multimedia"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-perl"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-webserver"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-openembedded
+        # All of these for working with security recipes, hardening, and TPM features on Targets
+      - name: meta-security
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-hardening"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-integrity"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-parsec"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-tpm"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-security
+      # This will help with learning to use Trusted Platform Module (TPM) and secure boot
+      # features on various targets.
+      - name: meta-secure-core
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-ids"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-secure-core-common"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-signing-key"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-tpm2"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-secure-core
+      - name: meta-swupdate
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-swupdate
+      - name: meta-efibootguard
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-efibootguard
+      - name: meta-virtualization
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-virtualization
+      # Target-specific layers for various builds
+      - name: meta-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-raspberrypi"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-raspberrypi
+      # This is my custom layer for RPi Builds.
+      - name: tcook-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-raspberrypi-tcook"
+        fetch:
+          commands:
+            - git submodule update --init layers/common/meta-raspberrypi-tcook
+      - name: tcook-common
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-tcook-common"
+        fetch:
+          commands:
+            - git submodule update --init layers/common/meta-tcook-common
+            - git subnm
+  blacksail:
+    description: "blacksail branch build of Yocto Project and essential layers for practice"
+    oeinit: "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/oe-init-build-env"
+    pyrex:
+      root: "%{WHISK_PROJECT_ROOT}/layers/pyrex"
+      conf: "%{WHISK_PROJECT_ROOT}/layers/pyrex.ini"
+      # I'm including all of the sub-layers for now, but I will likely trim this down to just
+      # the ones I need for my builds.
+    layers:
+      - name: core
+        paths: 
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-selftest"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-skeleton"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-yocto-bsp"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/poky
+
+      - name: meta-oe
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-initramfs"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-multimedia"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-perl"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-webserver"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-openembedded
+        # All of these for working with security recipes, hardening, and TPM features on Targets
+      - name: meta-security
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-hardening"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-integrity"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-parsec"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-tpm"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-security
+      # This will help with learning to use Trusted Platform Module (TPM) and secure boot
+      # features on various targets.
+      - name: meta-secure-core
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-ids"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-secure-core-common"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-signing-key"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-tpm2"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-secure-core
+      - name: meta-swupdate
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-swupdate
+      - name: meta-efibootguard
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-efibootguard
+      - name: meta-virtualization
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-virtualization
+      # Target-specific layers for various builds
+      - name: meta-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-raspberrypi"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-raspberrypi
+      # This is my custom layer for RPi Builds.
+      - name: tcook-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-raspberrypi-tcook"
+        fetch:
+          commands:
+            - git submodule update --init layers/common/meta-raspberrypi-tcook
+  blacksail:
+    description: "blacksail branch build of Yocto Project and essential layers for practice"
+    oeinit: "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/oe-init-build-env"
+    pyrex:
+      root: "%{WHISK_PROJECT_ROOT}/layers/pyrex"
+      conf: "%{WHISK_PROJECT_ROOT}/layers/pyrex.ini"
+      # I'm including all of the sub-layers for now, but I will likely trim this down to just
+      # the ones I need for my builds.
+    layers:
+      - name: core
+        paths: 
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-poky"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-selftest"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-skeleton"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-yocto-bsp"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/poky
+
+      - name: meta-oe
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-initramfs"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-multimedia"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-perl"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-webserver"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-openembedded
+        # All of these for working with security recipes, hardening, and TPM features on Targets
+      - name: meta-security
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-hardening"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-integrity"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-parsec"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-tpm"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-security
+      # This will help with learning to use Trusted Platform Module (TPM) and secure boot
+      # features on various targets.
+      - name: meta-secure-core
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-ids"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-secure-core-common"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-signing-key"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-tpm2"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-secure-core
+      - name: meta-swupdate
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-swupdate
+      - name: meta-efibootguard
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-efibootguard
+      - name: meta-virtualization
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-virtualization
+      # Target-specific layers for various builds
+      - name: meta-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-raspberrypi"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-raspberrypi
+      # This is my custom layer for RPi Builds.
+      - name: tcook-raspberrypi
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-raspberrypi-tcook"
+        fetch:
+          commands:
+            - git submodule update --init layers/common/meta-raspberrypi-tcook
+
+
+sites:
+  local:
+    description: "Local build environment for Yocto Project and essential layers for practice"
+    confg: |
+      INHERIT += "rm_work"
+      PREFERRED_VERSION_tpm2-tss-engine = "1.2.0"
+      BBMASK += "recipes-tpm2/tpm2-tss-engine/tpm2-tss-engine_1.2.0.bb
+      
+      
+      BB_SIGNATURE_HANDLER = "ODBasicHash"
+
+core:
+  layers:
+    - core
+  conf: |
+    #DISTRO = "poky"
+    DISTRO = "pixelatedrailroad"
+    INIT_MANAGER = "systemd"
+    DISTRO_FEATURES:append = " pam wayland systemd"
+    CORE_IMAGE_EXTRA_INSTALL:append = " openssh-sshd iproute2"
+    IMAGE_FSTYPES:append = "wic.bz2 wic.bmap"
+    # whisk will automatically BBMASK layers in any submod present but nit in the above layers
+    #
+    # 
+    # silence warning about no .bb files present
+    BB_PATTERN_IGNORE_EMPTY:pixelatedrailroad = "1"
+    BB_PATTERN_IGNORE_EMPTY:meta-raspberrypi = "1"
+    BB_PATTERN_IGNORE_EMPTY:meta-raspberrypi-tcook = "1"
+    BB_PATTERN_IGNORE_EMPTY:swupdate = "1"
+    BB_PATTERN_IGNORE_EMPTY:meta-virtualization = "1"
+    BB_PATTERN_IGNORE_EMPTY:tpm-layer = "1"
+    BB_PATTERN_IGNORE_EMPTY:meta-python = "1"
+    BB_PATTERN_IGNORE_EMPTY:security = "1"
+    BB_PATTERN_IGNORE_EMPTY:secure-core = "1"
+    BB_PATTERN_IGNORE_EMPTY:efi-boot-signature = "1"
+    BB_PATTERN_IGNORE_EMPTY:tpm2 = "1"
+    BB_PATTERN_IGNORE_EMPTY:signing_key = "1"
+    BB_PATTERN_IGNORE_EMPTY:integrity_layer = "1"
+    BB_PATTERN_IGNORE_EMPTY:webserver = "1"
+    BB_PATTERN_IGNORE_EMPTY:meta-python = "1"
+    BB_PATTERN_IGNORE_EMPTY:perl-layer = "1"
+    BB_PATTERN_IGNORE_EMPTY:openembedded-layer = "1"
+    BB_PATTERN_IGNORE_EMPTY:networking-layer = "1"
+    BB_PATTERN_IGNORE_EMPTY:filesystems-layer = "1"
+    BB_PATTERN_IGNORE_EMPTY:intel = "1"
+    BB_PATTERN_IGNORE_EMPTY:raspberrypi = "1"
+    BB_PATTERN_IGNORE_EMPTY:efibootguard = "1"
+    BB_PATTERN_IGNORE_EMPTY:meta-arm = "1"
+    BB_PATTERN_IGNORE_EMPTY:arm-toolchain = "1"
+    BB_PATTERN_IGNORE_EMPTY:openamp-layer = "1"
+    BB_PATTERN_IGNORE_EMPTY: = "1"
+    BB_PATTERN_IGNORE_EMPTY: = "1"
+    BB_PATTERN_IGNORE_EMPTY: = "1"
+
+# Defines the specific Raspberry Pi target hardware
+products:
+
+    pi3:
+      description: "Raspberry Pi 3B 64-bit Target"
+      default_version: blacksail
+      layers:
+        - core
+        - raspberrypi
+        - arm
+        - virtualization
+        - secure-core
+        - security
+        - swupdate
+        - tcook-raspberrypi
+      targets:
+        - mc:product-pi3:core-image-full-cmdline
+        - mc:product-pi3:core-image-full-cmdline-swu
+      conf: |
+        DISTRO = "pixelatedrailroad"
+        MACHINE = "raspberrypi3-64"
+        SWVERSION = "${PI3_VERSION}"
+        RM_WORK_EXCLUDE += " core-image-full-cmdline"
+    pi4:
+      description: "Raspberry Pi 4 64-bit Target"
+      default_version: blacksail
+      layers:
+        - core
+        - raspberrypi
+        - arm
+        - virtualization
+        - secure-core
+        - security
+        - swupdate
+        - tcook-raspberrypi
+      targets:
+        - mc:product-pi4:core-image-full-cmdline
+        - mc:product-pi4:core-image-full-cmdline-swu
+      conf: |
+        DISTRO = "pixelatedrailroad"
+        MACHINE = "raspberrypi4-64"
+        SWVERSION = "${PI4_VERSION}"
+        RM_WORK_EXCLUDE += " core-image-full-cmdline"
+    pi5:
+      description: "Raspberry Pi 5 64-bit Target"
+      default_version: blacksail
+      layers:
+        - core
+        - raspberrypi
+        - arm
+        - virtualization
+        - secure-core
+        - security
+        - swupdate
+        - tcook-raspberrypi
+      targets:
+        - mc:product-pi5:core-image-full-cmdline
+        - mc:product-pi5:core-image-full-cmdline-swu
+      conf: |
+        DISTRO = "pixelatedrailroad"
+        MACHINE = "raspberrypi5"
+        SWVERSION = "${PI5_VERSION}"
+        RM_WORK_EXCLUDE += " core-image-full-cmdline"
+
+# build mode options
+modes:
+    development:
+      description: "Debug build with root access"
+      conf: |
+        IMAGE_FEATURES[validateitems] += "development"
+        IMAGE_FEATURES:append = " development"
+    manufacturing:
+      description: "Limited capabilities for target manufacturer build"
+      conf: |
+        IMAGE_FEATURES[validateitems] += "manufacturing"
+        IMAGE_FEATURES:append = " manufacturing"
+    production:
+      description: "Hardened user production build"
+      conf: |
+        IMAGE_FEATURES[validateitems] += "production"
+        IMAGE_FEATURES:append = " production"
+    release:
+      description: "Release build with all features enabled"
+      conf: |
+        IMAGE_FEATURES[validateitems] += "release"
+        IMAGE_FEATURES:append = " release"

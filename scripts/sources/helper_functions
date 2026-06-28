@@ -1,0 +1,25 @@
+
+
+user_input() {
+    local choice_desc="$1"
+    shift
+    local options=("$@")
+
+    printf "\n\n" >&2
+
+
+    echo "Choose a ${choice_desc}:" >&2
+    for i in "${!options[@]}"; do
+        echo "$((i + 1))) ${options[$i]}" >&2
+    done
+
+    while true; do
+        read -r -p "Enter selection [1-${#options[@]}]: " product_choice < /dev/tty
+        if [[ "$product_choice" =~ ^[1-9][0-9]*$ ]] && [ "$product_choice" -ge 1 ] && [ "$product_choice" -le "${#options[@]}" ]; then
+            echo "${options[$((product_choice - 1))]}"
+            break
+        else
+            echo "Invalid selection. Please enter a number between 1 and ${#options[@]}." >&2
+        fi
+    done
+}

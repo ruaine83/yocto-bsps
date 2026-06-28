@@ -1,0 +1,9 @@
+PyYAML==6.0.3 
+jsonschema==4.26.0 
+tabulate==0.10.0 
+tqdm==4.68.3 
+yamllint==1.38.0
+jsonschema-specifications==2025.9.1
+jsonschema == 4.26.0
+
+gitpython==3.1.50 
