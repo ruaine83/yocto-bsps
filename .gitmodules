@@ -37,9 +37,6 @@
 	path = layers/common/meta-raspberrypi-tcook
 	url = git@github.com:ruaine83/meta-raspberrypi-tcook.git
 	branch = master
-[submodule "layers/pyrex"]
-	path = layers/pyrex
-	url = https://github.com/garmin/pyrex.git
 [submodule "whisk"]
 	path = whisk
 	url = https://github.com/garmin/whisk.git
