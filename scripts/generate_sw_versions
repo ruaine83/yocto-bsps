@@ -1,0 +1,14 @@
+
+if [ -f ./VERSION ]; then
+    RPI3_VERSION=$(cat ./VERSION)
+    RPI4_VERSION=$(cat ./VERSION)
+    RPI5_VERSION=$(cat ./VERSION)
+else
+    RPI3_VERSION="0.0.1"
+    RPI4_VERSION="0.0.1"
+    RPI5_VERSION="0.0.1"
+fi
+
+export RPI3_VERSION
+export RPI4_VERSION
+export RPI5_VERSION
