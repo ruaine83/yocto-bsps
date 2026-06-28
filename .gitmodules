@@ -40,3 +40,6 @@
 [submodule "whisk"]
 	path = whisk
 	url = https://github.com/garmin/whisk.git
+[submodule "layers/pyrex"]
+	path = layers/pyrex
+	url = https://github.com/garmin/pyrex.git
