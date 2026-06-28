@@ -23,10 +23,12 @@ fi
 export OE_BUILD_DIR=$(pwd)/build
 export PYREX_BIND="${OE_BUILD_DIR}"
 
-BUILD_TYPE=$(user_input "build type" "development" "production")
+TARGET_BUILD_MODE=$(user_input "build mode" "development" "production")
 TARGET_PRODUCT=$(user_input "target product" "raspberrypi3" "raspberrypi4" "raspberrypi5")
-TARGET_IMAGE=$(user_input "target image version" "scarthgap" "wrynose" "blacksail")
+TARGET_IMAGE=$(user_input "target image version" "scarthgap" "styhead" "wrynose" )
 
-echo "Selected ${TARGET_PRODUCT} with ${BUILD_TYPE} image of ${TARGET_IMAGE}"
+echo "Selected ${TARGET_PRODUCT} with ${TARGET_BUILD_MODE} image of ${TARGET_IMAGE}"
 
-. ./init-build-env --product "${TARGET_PRODUCT}" --version "${TARGET_IMAGE}" --build-dir "${OE_BUILD_DIR}"
+git submodule set-branch --branch "${TARGET_IMAGE}" layers/open-source/poky
+
+. ./init-build-env --product "${TARGET_PRODUCT}" --mode "${TARGET_BUILD_MODE}" --version "${TARGET_IMAGE}" --build-dir "${OE_BUILD_DIR}"

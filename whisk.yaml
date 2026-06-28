@@ -8,18 +8,18 @@ defaults:
 # passing in environment variables, or other pre-build configuration steps.
 hooks:
   pre_init: |
-    echo "Starting build for ${product} in ${mode} mode..."
-    source %{WHISK_PROJECT_ROOT}/scripts/generate_sw_versions.sh export
+    echo "Starting build mode..."
+    source %{WHISK_PROJECT_ROOT}/scripts/generate_sw_versions export
     #
     #
     PYREX_CONFIG_BIND="%{WHISK_PROJECT_ROOT} ~/.ssh/"
     export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} \
     NDDSHOME \
-    RPI#_VERSION RPI$_VERSION RPI%_VERSION "
+    RPI3_VERSION RPI4_VERSION RPI5_VERSION "
 
 versions:
-  blacksail:
-    description: "blacksail branch build of Yocto Project and essential layers for practice"
+  wrynose:
+    description: "Yocto 6.0 (Wrynose) branch build of Yocto Project and essential layers for practice"
     oeinit: "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/oe-init-build-env"
     pyrex:
       root: "%{WHISK_PROJECT_ROOT}/layers/pyrex"
@@ -38,7 +38,7 @@ versions:
           commands:
             - git submodule update --init layers/open-source/poky
 
-      - name: meta-oe
+      - name: oe
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
@@ -53,7 +53,7 @@ versions:
           commands:
             - git submodule update --init layers/open-source/meta-openembedded
         # All of these for working with security recipes, hardening, and TPM features on Targets
-      - name: meta-security
+      - name: security
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-hardening"
@@ -65,7 +65,7 @@ versions:
             - git submodule update --init layers/open-source/meta-security
       # This will help with learning to use Trusted Platform Module (TPM) and secure boot
       # features on various targets.
-      - name: meta-secure-core
+      - name: secure-core
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
@@ -76,26 +76,32 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-secure-core
-      - name: meta-swupdate
+      - name: swupdate
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-swupdate
-      - name: meta-efibootguard
+      - name: efibootguard
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-efibootguard
-      - name: meta-virtualization
+      - name: virtualization
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-virtualization
+      - name: arm
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-arm
       # Target-specific layers for various builds
-      - name: meta-raspberrypi
+      - name: raspberrypi
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-raspberrypi"
         fetch:
@@ -114,9 +120,9 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/common/meta-tcook-common
-            - git subnm
-  blacksail:
-    description: "blacksail branch build of Yocto Project and essential layers for practice"
+            
+  styhead:
+    description: "Yocto 5.1 (styhead) branch build of Yocto Project and essential layers for practice"
     oeinit: "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/oe-init-build-env"
     pyrex:
       root: "%{WHISK_PROJECT_ROOT}/layers/pyrex"
@@ -135,7 +141,7 @@ versions:
           commands:
             - git submodule update --init layers/open-source/poky
 
-      - name: meta-oe
+      - name: oe
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
@@ -150,7 +156,7 @@ versions:
           commands:
             - git submodule update --init layers/open-source/meta-openembedded
         # All of these for working with security recipes, hardening, and TPM features on Targets
-      - name: meta-security
+      - name: security
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-hardening"
@@ -162,7 +168,7 @@ versions:
             - git submodule update --init layers/open-source/meta-security
       # This will help with learning to use Trusted Platform Module (TPM) and secure boot
       # features on various targets.
-      - name: meta-secure-core
+      - name: secure-core
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
@@ -173,26 +179,32 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-secure-core
-      - name: meta-swupdate
+      - name: swupdate
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-swupdate
-      - name: meta-efibootguard
+      - name: efibootguard
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-efibootguard
-      - name: meta-virtualization
+      - name: virtualization
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-virtualization
+      - name: arm
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-arm
       # Target-specific layers for various builds
-      - name: meta-raspberrypi
+      - name: raspberrypi
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-raspberrypi"
         fetch:
@@ -205,8 +217,15 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/common/meta-raspberrypi-tcook
-  blacksail:
-    description: "blacksail branch build of Yocto Project and essential layers for practice"
+      - name: tcook-common
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-tcook-common"
+        fetch:
+          commands:
+            - git submodule update --init layers/common/meta-tcook-common
+
+  scarthgap:
+    description: "Yocto 5.0 (Scarthgap) branch build of Yocto Project and essential layers for practice"
     oeinit: "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/oe-init-build-env"
     pyrex:
       root: "%{WHISK_PROJECT_ROOT}/layers/pyrex"
@@ -225,7 +244,7 @@ versions:
           commands:
             - git submodule update --init layers/open-source/poky
 
-      - name: meta-oe
+      - name: oe
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
@@ -240,7 +259,7 @@ versions:
           commands:
             - git submodule update --init layers/open-source/meta-openembedded
         # All of these for working with security recipes, hardening, and TPM features on Targets
-      - name: meta-security
+      - name: security
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security/meta-hardening"
@@ -252,7 +271,7 @@ versions:
             - git submodule update --init layers/open-source/meta-security
       # This will help with learning to use Trusted Platform Module (TPM) and secure boot
       # features on various targets.
-      - name: meta-secure-core
+      - name: secure-core
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
@@ -263,31 +282,38 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-secure-core
-      - name: meta-swupdate
+      - name: swupdate
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-swupdate
-      - name: meta-efibootguard
+      - name: efibootguard
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-efibootguard
-      - name: meta-virtualization
+      - name: virtualization
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-virtualization
       # Target-specific layers for various builds
-      - name: meta-raspberrypi
+      - name: raspberrypi
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-raspberrypi"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-raspberrypi
+      - name: arm
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-arm
+      
       # This is my custom layer for RPi Builds.
       - name: tcook-raspberrypi
         paths:
@@ -295,18 +321,23 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/common/meta-raspberrypi-tcook
+      - name: tcook-common
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-tcook-common"
+        fetch:
+          commands:
+            - git submodule update --init layers/common/meta-tcook-common
 
 
 sites:
   local:
-    description: "Local build environment for Yocto Project and essential layers for practice"
-    confg: |
+    description: "Env on local machine"
+    conf: |
       INHERIT += "rm_work"
       PREFERRED_VERSION_tpm2-tss-engine = "1.2.0"
-      BBMASK += "recipes-tpm2/tpm2-tss-engine/tpm2-tss-engine_1.2.0.bb
-      
-      
-      BB_SIGNATURE_HANDLER = "ODBasicHash"
+      BBMASK += "recipes-tpm2/tpm2-tss-engine/tpm2-tss-engine_1.2.0.bb"
+      BBMASK += "meta-intel/recipes-selftest/images/secure-boot-selftest-image-unsigned.bb"
+      OE_TERMINAL = "screen"
 
 core:
   layers:
@@ -353,10 +384,9 @@ core:
 
 # Defines the specific Raspberry Pi target hardware
 products:
-
-    pi3:
+    raspberrypi3:
       description: "Raspberry Pi 3B 64-bit Target"
-      default_version: blacksail
+      default_version: styhead
       layers:
         - core
         - raspberrypi
@@ -374,9 +404,9 @@ products:
         MACHINE = "raspberrypi3-64"
         SWVERSION = "${PI3_VERSION}"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
-    pi4:
+    raspberrypi4:
       description: "Raspberry Pi 4 64-bit Target"
-      default_version: blacksail
+      default_version: styhead
       layers:
         - core
         - raspberrypi
@@ -394,9 +424,9 @@ products:
         MACHINE = "raspberrypi4-64"
         SWVERSION = "${PI4_VERSION}"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
-    pi5:
+    raspberrypi5:
       description: "Raspberry Pi 5 64-bit Target"
-      default_version: blacksail
+      default_version: styhead
       layers:
         - core
         - raspberrypi

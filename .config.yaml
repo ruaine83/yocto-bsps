@@ -1,0 +1,7 @@
+actual_version: scarthgap
+build_dir: /home/ruaine83/Projects/Yocto/yocto-bsps/build
+cache_version: 1
+mode: production
+product: raspberrypi4
+site: local
+version: scarthgap
