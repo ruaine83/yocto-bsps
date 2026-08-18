@@ -13,10 +13,10 @@ hooks:
   pre_init: |
     echo "Starting build mode..."
     source %{WHISK_PROJECT_ROOT}/scripts/generate_sw_versions export
-    PYREX_CONFIG_BIND="%{WHISK_PROJECT_ROOT} ~/.ssh/"
+    export PYREX_CONFIG_BIND="%{WHISK_PROJECT_ROOT} ~/.ssh/"
     export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} \
     NDDSHOME \
-    RPI3_VERSION RPI4_VERSION RPI5_VERSION "
+    RPI0_VERSION RPI3_VERSION RPI4_VERSION RPI5_VERSION "
 
 versions:
   wrynose:
@@ -348,7 +348,6 @@ versions:
           commands:
             - git submodule update --init layers/common/meta-tcook-common
 
-
 sites:
   local:
     description: "Env on local machine"
@@ -404,6 +403,7 @@ core:
     BBFILE_PATTERN_IGNORE_EMPTY_gnome-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_clang-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_whisk = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_lts-u-boot-mixins = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_meta-tcook-common = "1"
 
 # Defines the specific Raspberry Pi target hardware
@@ -429,7 +429,7 @@ products:
       conf: |
         DISTRO = "poky"
         MACHINE = "raspberrypi0-2w-64"
-        SWVERSION = "${PI0_VERSION}"
+        SWVERSION = "${RPI0_VERSION}"
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
@@ -457,7 +457,7 @@ products:
       conf: |
         DISTRO = "poky"
         MACHINE = "raspberrypi3-64"
-        SWVERSION = "${PI3_VERSION}"
+        SWVERSION = "${RPI3_VERSION}"
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
@@ -487,7 +487,7 @@ products:
         #DISTRO = "poky"
         DISTRO = "pixelatedrailroad"
         MACHINE = "pr-raspberrypi4-64"
-        SWVERSION = "${PI4_VERSION}"
+        SWVERSION = "${RPI4_VERSION}"
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
@@ -516,7 +516,7 @@ products:
       conf: |
         DISTRO = "poky"
         MACHINE = "pr-raspberrypi5"
-        SWVERSION = "${PI5_VERSION}"
+        SWVERSION = "${RPI5_VERSION}"
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
