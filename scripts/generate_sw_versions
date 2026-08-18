@@ -1,14 +1,20 @@
+#!/bin/bash
 
-if [ -f ./VERSION ]; then
-    RPI3_VERSION=$(cat ./VERSION)
-    RPI4_VERSION=$(cat ./VERSION)
-    RPI5_VERSION=$(cat ./VERSION)
+VERSION_FILE=$(cat ./VERSION)
+
+if [ -n "${VERSION_FILE}" ]; then
+    RPI0_VERSION="p${VERSION_FILE}"
+    RPI3_VERSION="p${VERSION_FILE}"
+    RPI4_VERSION="p${VERSION_FILE}"
+    RPI5_VERSION="p${VERSION_FILE}"
 else
-    RPI3_VERSION="0.0.1"
-    RPI4_VERSION="0.0.1"
-    RPI5_VERSION="0.0.1"
+    RPI0_VERSION="p0.0.1"
+    RPI3_VERSION="p0.0.1"
+    RPI4_VERSION="p0.0.1"
+    RPI5_VERSION="p0.0.1"
 fi
 
+export RPI0_VERSION
 export RPI3_VERSION
 export RPI4_VERSION
 export RPI5_VERSION

@@ -24,11 +24,23 @@ export OE_BUILD_DIR=$(pwd)/build
 export PYREX_BIND="${OE_BUILD_DIR}"
 
 TARGET_BUILD_MODE=$(user_input "build mode" "development" "production")
-TARGET_PRODUCT=$(user_input "target product" "raspberrypi3" "raspberrypi4" "raspberrypi5")
+TARGET_PRODUCT=$(user_input "target product" "raspberrypi0" "raspberrypi3" "raspberrypi4" "raspberrypi5")
 TARGET_IMAGE=$(user_input "target image version" "scarthgap" "styhead" "wrynose" )
 
-echo "Selected ${TARGET_PRODUCT} with ${TARGET_BUILD_MODE} image of ${TARGET_IMAGE}"
+echo -e "\n\nSelected ${TARGET_PRODUCT} with ${TARGET_BUILD_MODE} image of ${TARGET_IMAGE}\n\n"
 
-git submodule set-branch --branch "${TARGET_IMAGE}" layers/open-source/poky
+git submodule foreach --recursive " \
+    case $sm_path in
+        layers/open-source/meta-lts-mixins)
+            echo "Skipping meta-lts-mixins layer for now"
+            ;;
+        layers/open-source/*)
+            git fetch origin
+            git switch ${TARGET_IMAGE}
+            git pull --ff-only origin "${TARGET_IMAGE}"
+            ;;
+    esac
+"
 
 . ./init-build-env --product "${TARGET_PRODUCT}" --mode "${TARGET_BUILD_MODE}" --version "${TARGET_IMAGE}" --build-dir "${OE_BUILD_DIR}"
+unset BB_ENV_EXTRAWHITE

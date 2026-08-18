@@ -1,8 +1,11 @@
 version: 2.0
 
+project_root: .
+
 defaults:
   site: local
   mode: development
+  build_dir: "%{WHISK_PROJECT_ROOT}/build"
 
 # use for setup as needed, e.g., for setting up a local mirror of the Yocto Project,
 # passing in environment variables, or other pre-build configuration steps.
@@ -10,8 +13,6 @@ hooks:
   pre_init: |
     echo "Starting build mode..."
     source %{WHISK_PROJECT_ROOT}/scripts/generate_sw_versions export
-    #
-    #
     PYREX_CONFIG_BIND="%{WHISK_PROJECT_ROOT} ~/.ssh/"
     export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} \
     NDDSHOME \
@@ -21,6 +22,7 @@ versions:
   wrynose:
     description: "Yocto 6.0 (Wrynose) branch build of Yocto Project and essential layers for practice"
     oeinit: "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/oe-init-build-env"
+    compat: auto
     pyrex:
       root: "%{WHISK_PROJECT_ROOT}/layers/pyrex"
       conf: "%{WHISK_PROJECT_ROOT}/layers/pyrex.ini"
@@ -29,11 +31,8 @@ versions:
     layers:
       - name: core
         paths: 
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-poky"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-selftest"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-skeleton"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-yocto-bsp"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/meta"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/meta-poky"
         fetch:
           commands:
             - git submodule update --init layers/open-source/poky
@@ -96,10 +95,17 @@ versions:
             - git submodule update --init layers/open-source/meta-virtualization
       - name: arm
         paths:
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-toolchain"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-arm
+      - name: clang
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-clang"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-clang
       # Target-specific layers for various builds
       - name: raspberrypi
         paths:
@@ -132,11 +138,8 @@ versions:
     layers:
       - name: core
         paths: 
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-poky"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-selftest"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-skeleton"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-yocto-bsp"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/meta"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/meta-poky"
         fetch:
           commands:
             - git submodule update --init layers/open-source/poky
@@ -199,10 +202,17 @@ versions:
             - git submodule update --init layers/open-source/meta-virtualization
       - name: arm
         paths:
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-toolchain"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-arm
+      - name: clang
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-clang"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-clang
       # Target-specific layers for various builds
       - name: raspberrypi
         paths:
@@ -235,11 +245,8 @@ versions:
     layers:
       - name: core
         paths: 
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-poky"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-selftest"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-skeleton"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-yocto-bsp"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/meta"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/poky/meta-poky"
         fetch:
           commands:
             - git submodule update --init layers/open-source/poky
@@ -300,6 +307,13 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-virtualization
+      - name: clang
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-clang"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-clang
+
       # Target-specific layers for various builds
       - name: raspberrypi
         paths:
@@ -309,11 +323,17 @@ versions:
             - git submodule update --init layers/open-source/meta-raspberrypi
       - name: arm
         paths:
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-toolchain"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-arm
-      
+      - name: mixins
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-lts-mixins"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-lts-mixins
       # This is my custom layer for RPi Builds.
       - name: tcook-raspberrypi
         paths:
@@ -348,122 +368,180 @@ core:
     INIT_MANAGER = "systemd"
     DISTRO_FEATURES:append = " pam wayland systemd"
     CORE_IMAGE_EXTRA_INSTALL:append = " openssh-sshd iproute2"
-    IMAGE_FSTYPES:append = "wic.bz2 wic.bmap"
-    # whisk will automatically BBMASK layers in any submod present but nit in the above layers
-    #
-    # 
+    IMAGE_FSTYPES:append = " wic.bz2 wic.bmap "
+    BB_NUMBER_THREADS = "24"
+    PARALLEL_MAKE = "-j 24"
+    # whisk will automatically BBMASK layers in any submod present but not in the above layers
     # silence warning about no .bb files present
-    BB_PATTERN_IGNORE_EMPTY:pixelatedrailroad = "1"
-    BB_PATTERN_IGNORE_EMPTY:meta-raspberrypi = "1"
-    BB_PATTERN_IGNORE_EMPTY:meta-raspberrypi-tcook = "1"
-    BB_PATTERN_IGNORE_EMPTY:swupdate = "1"
-    BB_PATTERN_IGNORE_EMPTY:meta-virtualization = "1"
-    BB_PATTERN_IGNORE_EMPTY:tpm-layer = "1"
-    BB_PATTERN_IGNORE_EMPTY:meta-python = "1"
-    BB_PATTERN_IGNORE_EMPTY:security = "1"
-    BB_PATTERN_IGNORE_EMPTY:secure-core = "1"
-    BB_PATTERN_IGNORE_EMPTY:efi-boot-signature = "1"
-    BB_PATTERN_IGNORE_EMPTY:tpm2 = "1"
-    BB_PATTERN_IGNORE_EMPTY:signing_key = "1"
-    BB_PATTERN_IGNORE_EMPTY:integrity_layer = "1"
-    BB_PATTERN_IGNORE_EMPTY:webserver = "1"
-    BB_PATTERN_IGNORE_EMPTY:meta-python = "1"
-    BB_PATTERN_IGNORE_EMPTY:perl-layer = "1"
-    BB_PATTERN_IGNORE_EMPTY:openembedded-layer = "1"
-    BB_PATTERN_IGNORE_EMPTY:networking-layer = "1"
-    BB_PATTERN_IGNORE_EMPTY:filesystems-layer = "1"
-    BB_PATTERN_IGNORE_EMPTY:intel = "1"
-    BB_PATTERN_IGNORE_EMPTY:raspberrypi = "1"
-    BB_PATTERN_IGNORE_EMPTY:efibootguard = "1"
-    BB_PATTERN_IGNORE_EMPTY:meta-arm = "1"
-    BB_PATTERN_IGNORE_EMPTY:arm-toolchain = "1"
-    BB_PATTERN_IGNORE_EMPTY:openamp-layer = "1"
-    BB_PATTERN_IGNORE_EMPTY: = "1"
-    BB_PATTERN_IGNORE_EMPTY: = "1"
-    BB_PATTERN_IGNORE_EMPTY: = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_meta-raspberrypi-tcook = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_swupdate = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_tpm-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_meta-python = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_security = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_secure-core = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_tpm2 = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_webserver = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_perl-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_openembedded-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_networking-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_filesystems-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_intel = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_raspberrypi = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_efibootguard = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_meta-arm = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_arm-toolchain = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_openamp-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_virtualization-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_parsec-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_integrity = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_harden-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_signing-key = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_ids = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_encrypted-storage = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_efi-secure-boot = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_multimedia-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_meta-initramfs = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_gnome-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_clang-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_whisk = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_meta-tcook-common = "1"
 
 # Defines the specific Raspberry Pi target hardware
 products:
+    raspberrypi0:
+      description: "Raspberry Pi 0 W2 64-bit Target"
+      default_version: styhead
+      layers:
+        - core
+        - oe
+        - clang
+        - raspberrypi
+        - arm
+        - virtualization
+        - secure-core
+        - security
+        - swupdate
+        - mixins
+        - tcook-raspberrypi
+        - tcook-common
+      targets:
+        - mc:product-raspberrypi0:core-image-full-cmdline
+      conf: |
+        DISTRO = "poky"
+        MACHINE = "raspberrypi0-2w-64"
+        SWVERSION = "${PI0_VERSION}"
+        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
+        SPLASH = "plymouth"
+        RM_WORK_EXCLUDE += " core-image-full-cmdline"
+        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
+        SPLASH = "plymouth"
+
     raspberrypi3:
       description: "Raspberry Pi 3B 64-bit Target"
       default_version: styhead
       layers:
         - core
+        - oe
+        - clang
         - raspberrypi
         - arm
         - virtualization
         - secure-core
         - security
         - swupdate
+        - mixins
         - tcook-raspberrypi
+        - tcook-common
       targets:
-        - mc:product-pi3:core-image-full-cmdline
-        - mc:product-pi3:core-image-full-cmdline-swu
+        - mc:product-raspberrypi3:core-image-full-cmdline
       conf: |
-        DISTRO = "pixelatedrailroad"
+        DISTRO = "poky"
         MACHINE = "raspberrypi3-64"
         SWVERSION = "${PI3_VERSION}"
+        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
+        SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
+        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
+        SPLASH = "plymouth"
+        
     raspberrypi4:
       description: "Raspberry Pi 4 64-bit Target"
       default_version: styhead
       layers:
         - core
+        - oe
+        - clang
         - raspberrypi
         - arm
         - virtualization
         - secure-core
         - security
         - swupdate
+        - mixins
         - tcook-raspberrypi
+        - tcook-common
       targets:
-        - mc:product-pi4:core-image-full-cmdline
-        - mc:product-pi4:core-image-full-cmdline-swu
+        - mc:product-raspberrypi4:core-image-full-cmdline
+        - mc:product-raspberrypi4:core-image-full-cmdline-swu
       conf: |
+        #DISTRO = "poky"
         DISTRO = "pixelatedrailroad"
-        MACHINE = "raspberrypi4-64"
+        MACHINE = "pr-raspberrypi4-64"
         SWVERSION = "${PI4_VERSION}"
+        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
+        SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
+        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
+        SPLASH = "plymouth"
+
     raspberrypi5:
       description: "Raspberry Pi 5 64-bit Target"
       default_version: styhead
       layers:
         - core
+        - oe
+        - clang
         - raspberrypi
         - arm
         - virtualization
         - secure-core
         - security
         - swupdate
+        - mixins
         - tcook-raspberrypi
+        - tcook-common
       targets:
-        - mc:product-pi5:core-image-full-cmdline
-        - mc:product-pi5:core-image-full-cmdline-swu
+        - mc:product-raspberrypi5:core-image-full-cmdline
+        - mc:product-raspberrypi5:core-image-full-cmdline-swu
       conf: |
-        DISTRO = "pixelatedrailroad"
-        MACHINE = "raspberrypi5"
+        DISTRO = "poky"
+        MACHINE = "pr-raspberrypi5"
         SWVERSION = "${PI5_VERSION}"
+        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
+        SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
+        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
+        SPLASH = "plymouth"
 
 # build mode options
 modes:
     development:
       description: "Debug build with root access"
       conf: |
-        IMAGE_FEATURES[validateitems] += "development"
+        IMAGE_FEATURES[validitems] += "development"
         IMAGE_FEATURES:append = " development"
     manufacturing:
       description: "Limited capabilities for target manufacturer build"
       conf: |
-        IMAGE_FEATURES[validateitems] += "manufacturing"
+        IMAGE_FEATURES[validitems] += "manufacturing"
         IMAGE_FEATURES:append = " manufacturing"
     production:
       description: "Hardened user production build"
       conf: |
-        IMAGE_FEATURES[validateitems] += "production"
+        IMAGE_FEATURES[validitems] += "production"
         IMAGE_FEATURES:append = " production"
     release:
       description: "Release build with all features enabled"
       conf: |
-        IMAGE_FEATURES[validateitems] += "release"
+        IMAGE_FEATURES[validitems] += "release"
         IMAGE_FEATURES:append = " release"
