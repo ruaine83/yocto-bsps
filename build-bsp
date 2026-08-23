@@ -31,6 +31,19 @@ TARGET_IMAGE="scarthgap"
 
 echo -e "\n\nSelected ${TARGET_PRODUCT} with ${TARGET_BUILD_MODE} image of ${TARGET_IMAGE}\n\n"
 
-source ./init-build-env --product "${TARGET_PRODUCT}" --mode "${TARGET_BUILD_MODE}" --version "${TARGET_IMAGE}" --build-dir "${OE_BUILD_DIR}"
+# git submodule foreach " \
+#     case $sm_path in
+#         layers/open-source/meta-lts-mixins)
+#             echo "Skipping meta-lts-mixins layer for now"
+#             ;;
+#         layers/open-source/*)
+#             git fetch origin
+#             git switch ${TARGET_IMAGE}
+#             git pull --ff-only origin "${TARGET_IMAGE}"
+#             ;;
+#     esac
+# "
+
+. ./init-build-env --product "${TARGET_PRODUCT}" --mode "${TARGET_BUILD_MODE}" --version "${TARGET_IMAGE}" --build-dir "${OE_BUILD_DIR}"
 bitbake mc:product-${TARGET_PRODUCT}:core-image-full-cmdline
 unset BB_ENV_EXTRAWHITE
