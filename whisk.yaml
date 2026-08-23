@@ -40,14 +40,15 @@ versions:
       - name: oe
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-initramfs"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-multimedia"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-perl"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-webserver"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-xfce"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-openembedded
@@ -69,37 +70,45 @@ versions:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-ids"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-integrity"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-secure-core-common"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-signing-key"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-tpm2"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-secure-core
+
       - name: swupdate
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-swupdate
+
       - name: efibootguard
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-efibootguard
+
       - name: virtualization
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-virtualization
+
       - name: arm
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-bsp"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-systemready"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-toolchain"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-arm
+
       - name: clang
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-clang"
@@ -147,14 +156,15 @@ versions:
       - name: oe
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-initramfs"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-multimedia"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-perl"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-webserver"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-xfce"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-openembedded
@@ -176,43 +186,52 @@ versions:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-ids"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-integrity"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-secure-core-common"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-signing-key"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-tpm2"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-secure-core
+
       - name: swupdate
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-swupdate
+
       - name: efibootguard
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-efibootguard
+
       - name: virtualization
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-virtualization
+
       - name: arm
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-bsp"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-systemready"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-toolchain"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-arm
+
       - name: clang
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-clang"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-clang
+            
       # Target-specific layers for various builds
       - name: raspberrypi
         paths:
@@ -254,18 +273,20 @@ versions:
       - name: oe
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-oe"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-gnome"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-initramfs"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-filesystems"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-multimedia"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-networking"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-perl"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-python"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-webserver"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-openembedded/meta-xfce"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-openembedded
         # All of these for working with security recipes, hardening, and TPM features on Targets
+      
       - name: security
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-security"
@@ -276,6 +297,7 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-security
+
       # This will help with learning to use Trusted Platform Module (TPM) and secure boot
       # features on various targets.
       - name: secure-core
@@ -283,30 +305,45 @@ versions:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-efi-secure-boot"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-encrypted-storage"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-ids"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-integrity"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-secure-core-common"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-signing-key"
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-secure-core/meta-tpm2"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-secure-core
+
       - name: swupdate
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-swupdate"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-swupdate
+
       - name: efibootguard
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-efibootguard"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-efibootguard
+
       - name: virtualization
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-virtualization"
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-virtualization
+
+      - name: arm
+        paths:
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-bsp"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-systemready"
+        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-toolchain"
+        fetch:
+          commands:
+            - git submodule update --init layers/open-source/meta-arm
+
       - name: clang
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-clang"
@@ -321,13 +358,7 @@ versions:
         fetch:
           commands:
             - git submodule update --init layers/open-source/meta-raspberrypi
-      - name: arm
-        paths:
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm"
-        - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-arm/meta-arm-toolchain"
-        fetch:
-          commands:
-            - git submodule update --init layers/open-source/meta-arm
+
       - name: mixins
         paths:
         - "%{WHISK_PROJECT_ROOT}/layers/open-source/meta-lts-mixins"
@@ -354,7 +385,7 @@ sites:
     conf: |
       INHERIT += "rm_work"
       PREFERRED_VERSION_tpm2-tss-engine = "1.2.0"
-      BBMASK += "recipes-tpm2/tpm2-tss-engine/tpm2-tss-engine_1.2.0.bb"
+      BBMASK += "recipes-tpm2/tpm2-tss-engine/tpm2-tss-engine_1.1.0.bb"
       BBMASK += "meta-intel/recipes-selftest/images/secure-boot-selftest-image-unsigned.bb"
       OE_TERMINAL = "screen"
 
@@ -368,8 +399,9 @@ core:
     DISTRO_FEATURES:append = " pam wayland systemd"
     CORE_IMAGE_EXTRA_INSTALL:append = " openssh-sshd iproute2"
     IMAGE_FSTYPES:append = " wic.bz2 wic.bmap "
-    BB_NUMBER_THREADS = "24"
-    PARALLEL_MAKE = "-j 24"
+    # Set to use more or less CPU threads for building.
+    BB_NUMBER_THREADS = "20"
+    PARALLEL_MAKE = "-j 20"
     # whisk will automatically BBMASK layers in any submod present but not in the above layers
     # silence warning about no .bb files present
     BBFILE_PATTERN_IGNORE_EMPTY_meta-raspberrypi-tcook = "1"
@@ -403,21 +435,20 @@ core:
     BBFILE_PATTERN_IGNORE_EMPTY_gnome-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_clang-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_whisk = "1"
-    BBFILE_PATTERN_IGNORE_EMPTY_lts-u-boot-mixins = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_lts-u-boot-mixin = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_meta-tcook-common = "1"
 
 # Defines the specific Raspberry Pi target hardware
 products:
-    raspberrypi0:
+    pr-raspberrypi0:
       description: "Raspberry Pi 0 W2 64-bit Target"
-      default_version: styhead
+      default_version: scarthgap
       layers:
         - core
         - oe
         - clang
         - raspberrypi
         - arm
-        - virtualization
         - secure-core
         - security
         - swupdate
@@ -425,7 +456,7 @@ products:
         - tcook-raspberrypi
         - tcook-common
       targets:
-        - mc:product-raspberrypi0:core-image-full-cmdline
+        - mc:product-pr-raspberrypi0:core-image-full-cmdline
       conf: |
         DISTRO = "poky"
         MACHINE = "raspberrypi0-2w-64"
@@ -433,12 +464,10 @@ products:
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
-        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
-        SPLASH = "plymouth"
 
-    raspberrypi3:
+    pr-raspberrypi3:
       description: "Raspberry Pi 3B 64-bit Target"
-      default_version: styhead
+      default_version: scarthgap
       layers:
         - core
         - oe
@@ -453,7 +482,7 @@ products:
         - tcook-raspberrypi
         - tcook-common
       targets:
-        - mc:product-raspberrypi3:core-image-full-cmdline
+        - mc:product-pr-raspberrypi3:core-image-full-cmdline
       conf: |
         DISTRO = "poky"
         MACHINE = "raspberrypi3-64"
@@ -461,12 +490,10 @@ products:
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
-        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
-        SPLASH = "plymouth"
         
-    raspberrypi4:
+    pr-raspberrypi4:
       description: "Raspberry Pi 4 64-bit Target"
-      default_version: styhead
+      default_version: scarthgap
       layers:
         - core
         - oe
@@ -481,22 +508,18 @@ products:
         - tcook-raspberrypi
         - tcook-common
       targets:
-        - mc:product-raspberrypi4:core-image-full-cmdline
-        - mc:product-raspberrypi4:core-image-full-cmdline-swu
+        - mc:product-pr-raspberrypi4:core-image-full-cmdline
       conf: |
-        #DISTRO = "poky"
         DISTRO = "pixelatedrailroad"
-        MACHINE = "pr-raspberrypi4-64"
+        MACHINE = "raspberrypi4-64"
         SWVERSION = "${RPI4_VERSION}"
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
-        PREFERRED_PROVIDER_virtual/psplash = "plymouth"
-        SPLASH = "plymouth"
 
-    raspberrypi5:
+    pr-raspberrypi5:
       description: "Raspberry Pi 5 64-bit Target"
-      default_version: styhead
+      default_version: scarthgap
       layers:
         - core
         - oe
@@ -511,17 +534,39 @@ products:
         - tcook-raspberrypi
         - tcook-common
       targets:
-        - mc:product-raspberrypi5:core-image-full-cmdline
-        - mc:product-raspberrypi5:core-image-full-cmdline-swu
+        - mc:product-pr-raspberrypi5:core-image-full-cmdline
       conf: |
-        DISTRO = "poky"
-        MACHINE = "pr-raspberrypi5"
+        DISTRO = "pixelatedrailroad"
+        MACHINE = "raspberrypi5"
         SWVERSION = "${RPI5_VERSION}"
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
         RM_WORK_EXCLUDE += " core-image-full-cmdline"
+
+# bare builds
+
+    raspberrypi4:
+      description: "Raspberry Pi 4 64-bit Target Minimal Build"
+      default_version: scarthgap
+      layers:
+        - core
+        - oe
+        - clang
+        - raspberrypi
+        - arm
+        - virtualization
+        - secure-core
+        - security
+        - swupdate
+      targets:
+        - mc:product-raspberrypi4:core-image-full-cmdline
+      conf: |
+        DISTRO = "poky"
+        MACHINE = "raspberrypi4-64"
+        SWVERSION = "${RPI4_VERSION}"
         PREFERRED_PROVIDER_virtual/psplash = "plymouth"
         SPLASH = "plymouth"
+        RM_WORK_EXCLUDE += " core-image-full-cmdline"
 
 # build mode options
 modes:
@@ -543,5 +588,5 @@ modes:
     release:
       description: "Release build with all features enabled"
       conf: |
-        IMAGE_FEATURES[validitems] += "release"
-        IMAGE_FEATURES:append = " release"
+        IMAGE_FEATURES[validitems] += "release production"
+        IMAGE_FEATURES:append = " release production"
