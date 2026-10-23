@@ -53,3 +53,6 @@
 	path = layers/open-source/meta-lts-mixins
 	url = https://git.yoctoproject.org/meta-lts-mixins
 	branch = scarthgap/u-boot
+[submodule "layers/common/meta-beagle-v-tcook"]
+	path = layers/common/meta-beagle-v-tcook
+	url = git@github.com:ruaine83/meta-beagle-v-tcook.git
