@@ -1,4 +1,5 @@
 # Standard build/test/log directores to ignore
+artifacts/
 build/
 log/
 test/
