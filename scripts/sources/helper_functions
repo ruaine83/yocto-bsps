@@ -23,3 +23,12 @@ user_input() {
         fi
     done
 }
+
+# Get a list of user-entered values to pass back to the caller as an array.
+user_input_list() {
+    local choice_desc="$1"
+    shift
+
+    read -a items -p "Enter ${choice_desc} separated by spaces: "
+    echo "${items[@]}"
+}

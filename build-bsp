@@ -36,6 +36,11 @@ setup_venv() {
 }
 
 setup_dirs() {
+    if [ ! -d ${REPO_BUILD_LINK_NAME} ]; then
+        echo "Creating link to easily monitor build directory..."
+        ln -s "${LOCAL_BUILD_DIR}" "${REPO_BUILD_LINK_NAME}"
+    fi
+
     if [ ! -d "${LOCAL_BUILD_DIR}" ]; then
         echo "Build directory does not exist. Exiting..."
         exit 1
@@ -56,6 +61,7 @@ get_build_parameters() {
     TARGET_BUILD_MODE="release"
     TARGET_PRODUCT=$(user_input "target product" "pr-beaglev" "pr-raspberrypi0" "pr-raspberrypi3" "pr-raspberrypi4" "pr-raspberrypi5" "raspberrypi4")
     TARGET_IMAGE="scarthgap"
+    CLEAN_TARGETS=$(user_input_list "target recipes to clean")
     #TARGET_IMAGE=$(user_input "target image version" "scarthgap" "wrynose" )
 
 echo -e "\n\nSelected ${TARGET_PRODUCT} with ${TARGET_BUILD_MODE} image of ${TARGET_IMAGE}\n\n"
@@ -63,6 +69,19 @@ echo -e "\n\nSelected ${TARGET_PRODUCT} with ${TARGET_BUILD_MODE} image of ${TAR
 
 build_bsp() {
     . ./init-build-env --product "${TARGET_PRODUCT}" --mode "${TARGET_BUILD_MODE}" --version "${TARGET_IMAGE}" --build-dir "${OE_BUILD_DIR}"
+
+    
+    if [[ ${#CLEAN_TARGETS[@]} -gt 0 ]]; then
+        local target_list=""
+        for target in "${CLEAN_TARGETS[@]}"; do
+            target_list+="mc:product-${TARGET_PRODUCT}:${target} "
+        done
+
+        echo "Cleaning targets: ${CLEAN_TARGETS[@]}"
+        bitbake -c cleansstate $target_list
+        bitbake -c cleanall $target_list
+    fi
+
     bitbake mc:product-${TARGET_PRODUCT}:core-image-full-cmdline
 }
 
