@@ -140,12 +140,12 @@ versions:
             - git submodule update --init layers/common/meta-raspberrypi-tcook
 
       # This is my custom layer for BeagleV-Fire Builds.
-      - name: tcook-beagle-v
+      - name: tcook-beaglev
         paths:
-        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-beagle-v-tcook"
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-beaglev-tcook"
         fetch:
           commands:
-            - git submodule update --init layers/common/meta-beagle-v-tcook
+            - git submodule update --init layers/common/meta-beaglev-tcook
       
       - name: tcook-common
         paths:
@@ -274,12 +274,12 @@ versions:
             - git submodule update --init layers/common/meta-raspberrypi-tcook
 
       # This is my custom layer for BeagleV-Fire Builds.
-      - name: tcook-beagle-v
+      - name: tcook-beaglev
         paths:
-        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-beagle-v-tcook"
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-beaglev-tcook"
         fetch:
           commands:
-            - git submodule update --init layers/common/meta-beagle-v-tcook
+            - git submodule update --init layers/common/meta-beaglev-tcook
 
       - name: tcook-common
         paths:
@@ -417,12 +417,12 @@ versions:
             - git submodule update --init layers/common/meta-raspberrypi-tcook
 
       # This is my custom layer for BeagleV-Fire Builds.
-      - name: tcook-beagle-v
+      - name: tcook-beaglev
         paths:
-        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-beagle-v-tcook"
+        - "%{WHISK_PROJECT_ROOT}/layers/common/meta-beaglev-tcook"
         fetch:
           commands:
-            - git submodule update --init layers/common/meta-beagle-v-tcook
+            - git submodule update --init layers/common/meta-beaglev-tcook
 
       - name: tcook-common
         paths:
@@ -460,7 +460,7 @@ core:
     ## Personal Custom Layers
     BBFILE_PATTERN_IGNORE_EMPTY_meta-tcook-common = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_meta-raspberrypi-tcook = "1"
-    BBFILE_PATTERN_IGNORE_EMPTY_meta-beagle-v-tcook = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_meta-beaglev-tcook = "1"
 
     ## Open-Source Yocto Layers
     BBFILE_PATTERN_IGNORE_EMPTY_swupdate = "1"
@@ -615,7 +615,7 @@ products:
         - swupdate
         - riscv
         - mixins
-        - tcook-beagle-v
+        - tcook-beaglev
         - tcook-common
       targets:
         - mc:product-pr-beaglev:core-image-full-cmdline
