@@ -56,3 +56,6 @@
 [submodule "layers/common/meta-beagle-v-tcook"]
 	path = layers/common/meta-beagle-v-tcook
 	url = git@github.com:ruaine83/meta-beagle-v-tcook.git
+[submodule "layers/open-source/mets-riscv"]
+	path = layers/open-source/mets-riscv
+	url = https://github.com/riscv/meta-riscv.git
