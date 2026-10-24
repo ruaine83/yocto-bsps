@@ -1,6 +1,7 @@
 # Standard build/test/log directories to ignore
 log/
 test/
+./build
 
 # IDE files
 .vs*/
