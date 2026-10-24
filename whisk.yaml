@@ -348,7 +348,7 @@ core:
     BBFILE_PATTERN_IGNORE_EMPTY_openamp-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_virtualization-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_parsec-layer = "1"
-    BBFILE_PATTERN_IGNORE_EMPTY_integrity = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_integrity-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_harden-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_signing-key = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_ids = "1"
@@ -360,6 +360,9 @@ core:
     BBFILE_PATTERN_IGNORE_EMPTY_clang-layer = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_whisk = "1"
     BBFILE_PATTERN_IGNORE_EMPTY_lts-u-boot-mixin = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_xfce-layer = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_meta-arm-systemready = "1"
+    BBFILE_PATTERN_IGNORE_EMPTY_meta-arm-bsp = "1"
 
 # Defines the specific Raspberry Pi target hardware
 products:
