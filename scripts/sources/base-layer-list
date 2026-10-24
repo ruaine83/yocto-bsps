@@ -13,7 +13,10 @@ LAYER_LIST["open-source/meta-security"]="https://git.yoctoproject.org/meta-secur
 LAYER_LIST["open-source/meta-swupdate"]="git@github.com:sbabic/meta-swupdate.git"
 LAYER_LIST["open-source/meta-virtualization"]="https://git.yoctoproject.org/meta-virtualization.git"
 LAYER_LIST["open-source/meta-secure-core"]="git@github.com:Wind-River/meta-secure-core.git"
+LAYER_LIST["open-source/meta-riscv"]="https://github.com/riscv/meta-riscv.git"
+LAYER_LIST["open-source/meta-lts-mixins"]="https://git.yoctoproject.org/meta-lts-mixins.git"
 
 # My Layers to be added to the build in ./commmon/
+LAYER_LIST["common/meta-beaglev-tcook"]="git@github.com:ruaine83/meta-beaglev-tcook.git"
 LAYER_LIST["common/meta-raspberrypi-tcook"]="git@github.com:ruaine83/meta-raspberrypi-tcook.git"
 LAYER_LIST["common/meta-tcook-common"]="git@github.com:ruaine83/meta-tcook-common.git"
