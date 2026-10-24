@@ -1,8 +1,12 @@
-# Standard build/test/log directores to ignore
-artifacts/
-build/
+# Standard build/test/log directories to ignore
 log/
 test/
 
 # IDE files
 .vs*/
+
+# Whisk config and auto-generated files
+.config.yaml
+
+# Built BSPs
+artifacts/
