@@ -27,12 +27,10 @@ setup_venv() {
     local REQS_FILE=${1:-"./whisk/requirements.txt"}
     local SETUP_FILE=${2:-"./whisk/setup-venv"}
 
-    if ! grep -q "gitpython" "$REQS_FILE"; then
-        echo "gitpython==3.1.50; python_version > '3.7'" >> "${REQS_FILE}"
-    fi
-
-    pip3 install --user virtualenv --break-system-packages
-    sed -i -e 's/python3 -m venv "venv"/python3 -m virtualenv "venv"/g' "${SETUP_FILE}"
+    sudo apt install -y python3.12-venv python3-git
+    # pip3 install --user virtualenv --break-system-packages
+    # pip3 install --user gitpython --break-system-packages
+    # sed -i -e 's/python3 -m venv "venv"/python3 -m virtualenv "venv"/g' "${SETUP_FILE}"
     ./whisk/setup-venv
     source whisk/venv/bin/activate
 }
