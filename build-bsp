@@ -1,49 +1,102 @@
 #!/usr/bin/env bash
 
+set -e
+set -o pipefail
 
 source ./scripts/sources/helper_functions
 
-REQS_FILE=${1:-"./whisk/requirements.txt"}
-SETUP_FILE=${2:-"./whisk/setup-venv"}
+# Define global variables
+OE_BUILD_DIR=""
+PYREX_BIND=""
+TARGET_BUILD_MODE=""
+TARGET_PRODUCT=""
+TARGET_IMAGE=""
 
-if ! grep -q "gitpython" "$REQS_FILE"; then
-    echo "gitpython==3.1.50; python_version > '3.7'" >> "${REQS_FILE}"
-fi
+# Use local build directory for the BSP build for speed and space.
 
-pip3 install --user virtualenv --break-system-packages
-sed -i -e 's/python3 -m venv "venv"/python3 -m virtualenv "venv"/g' "${SETUP_FILE}"
-./whisk/setup-venv
-source whisk/venv/bin/activate
+# NOTE: All of these directories must be defined with absolute paths.
+# Otherwise whisk and bitbake will complain
+LOCAL_BUILD_DIR="/opt/bsp/build"
+REPO_BUILD_LINK_NAME="${PWD}/build"
+
+TOP_ARTIFACTS_DIR="${PWD}/artifacts"
 
 
-if [ ! -d "./build" ]; then
-    mkdir build
-fi
+setup_venv() {
 
-export OE_BUILD_DIR=$(pwd)/build
-export PYREX_BIND="${OE_BUILD_DIR}"
+    local REQS_FILE=${1:-"./whisk/requirements.txt"}
+    local SETUP_FILE=${2:-"./whisk/setup-venv"}
 
-#TARGET_BUILD_MODE=$(user_input "build mode" "development" "production" "release")
-TARGET_BUILD_MODE="release"
-TARGET_PRODUCT=$(user_input "target product" "pr-beaglev" "pr-raspberrypi0" "pr-raspberrypi3" "pr-raspberrypi4" "pr-raspberrypi5" "raspberrypi4")
-TARGET_IMAGE="scarthgap"
-#TARGET_IMAGE=$(user_input "target image version" "scarthgap" "styhead" "wrynose" )
+    if ! grep -q "gitpython" "$REQS_FILE"; then
+        echo "gitpython==3.1.50; python_version > '3.7'" >> "${REQS_FILE}"
+    fi
+
+    pip3 install --user virtualenv --break-system-packages
+    sed -i -e 's/python3 -m venv "venv"/python3 -m virtualenv "venv"/g' "${SETUP_FILE}"
+    ./whisk/setup-venv
+    source whisk/venv/bin/activate
+}
+
+setup_dirs() {
+    if [ ! -d "${LOCAL_BUILD_DIR}" ]; then
+        echo "Build directory does not exist. Exiting..."
+        exit 1
+    fi
+
+    if [ ! -d "${TOP_ARTIFACTS_DIR}" ]; then
+        mkdir -p "${TOP_ARTIFACTS_DIR}"
+    fi
+
+    export OE_BUILD_DIR="${LOCAL_BUILD_DIR}"
+    export PYREX_BIND="${OE_BUILD_DIR}"
+}
+
+get_build_parameters() {
+
+
+    #TARGET_BUILD_MODE=$(user_input "build mode" "development" "production" "release")
+    TARGET_BUILD_MODE="release"
+    TARGET_PRODUCT=$(user_input "target product" "pr-beaglev" "pr-raspberrypi0" "pr-raspberrypi3" "pr-raspberrypi4" "pr-raspberrypi5" "raspberrypi4")
+    TARGET_IMAGE="scarthgap"
+    #TARGET_IMAGE=$(user_input "target image version" "scarthgap" "wrynose" )
 
 echo -e "\n\nSelected ${TARGET_PRODUCT} with ${TARGET_BUILD_MODE} image of ${TARGET_IMAGE}\n\n"
+}
 
-# git submodule foreach " \
-#     case $sm_path in
-#         layers/open-source/meta-lts-mixins)
-#             echo "Skipping meta-lts-mixins layer for now"
-#             ;;
-#         layers/open-source/*)
-#             git fetch origin
-#             git switch ${TARGET_IMAGE}
-#             git pull --ff-only origin "${TARGET_IMAGE}"
-#             ;;
-#     esac
-# "
+build_bsp() {
+    . ./init-build-env --product "${TARGET_PRODUCT}" --mode "${TARGET_BUILD_MODE}" --version "${TARGET_IMAGE}" --build-dir "${OE_BUILD_DIR}"
+    bitbake mc:product-${TARGET_PRODUCT}:core-image-full-cmdline
+}
 
-. ./init-build-env --product "${TARGET_PRODUCT}" --mode "${TARGET_BUILD_MODE}" --version "${TARGET_IMAGE}" --build-dir "${OE_BUILD_DIR}"
-bitbake mc:product-${TARGET_PRODUCT}:core-image-full-cmdline
-unset BB_ENV_EXTRAWHITE
+copy_artifacts() {
+    local ARTIFACTS_DIR="${TOP_ARTIFACTS_DIR}/${TARGET_IMAGE}/${TARGET_PRODUCT}"
+
+    if [ ! -d "$ARTIFACTS_DIR" ]; then
+        mkdir -p "$ARTIFACTS_DIR"
+    fi
+
+    cp -r "${OE_BUILD_DIR}/tmp/deploy/images/${TARGET_PRODUCT}/"*.wic.gz "$ARTIFACTS_DIR/" || true
+    cp -r "${OE_BUILD_DIR}/tmp/deploy/images/${TARGET_PRODUCT}/"*.bmap "$ARTIFACTS_DIR/" || true
+}
+
+cleanup() {
+    # Clear Bitbake Variables
+    unset BB_ENV_EXTRAWHITE
+
+    # Clear Environment Variables
+    unset OE_BUILD_DIR
+    unset PYREX_BIND
+
+    deactivate
+}
+
+main() {
+
+    setup_venv "$@"
+    setup_dirs
+    get_build_parameters
+    build_bsp
+    cleanup
+}
+
+main "$@"
