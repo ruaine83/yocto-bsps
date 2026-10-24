@@ -25,7 +25,7 @@ export PYREX_BIND="${OE_BUILD_DIR}"
 
 #TARGET_BUILD_MODE=$(user_input "build mode" "development" "production" "release")
 TARGET_BUILD_MODE="release"
-TARGET_PRODUCT=$(user_input "target product" "pr-raspberrypi0" "pr-raspberrypi3" "pr-raspberrypi4" "pr-raspberrypi5" "raspberrypi4")
+TARGET_PRODUCT=$(user_input "target product" "pr-beaglev" "pr-raspberrypi0" "pr-raspberrypi3" "pr-raspberrypi4" "pr-raspberrypi5" "raspberrypi4")
 TARGET_IMAGE="scarthgap"
 #TARGET_IMAGE=$(user_input "target image version" "scarthgap" "styhead" "wrynose" )
 

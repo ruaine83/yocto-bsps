@@ -53,9 +53,9 @@
 	path = layers/open-source/meta-lts-mixins
 	url = https://git.yoctoproject.org/meta-lts-mixins
 	branch = scarthgap/u-boot
-[submodule "layers/common/meta-beagle-v-tcook"]
-	path = layers/common/meta-beagle-v-tcook
-	url = git@github.com:ruaine83/meta-beagle-v-tcook.git
 [submodule "layers/open-source/mets-riscv"]
 	path = layers/open-source/mets-riscv
 	url = https://github.com/riscv/meta-riscv.git
+[submodule "layers/common/meta-beaglev-tcook"]
+	path = layers/common/meta-beaglev-tcook
+	url = git@github.com:ruaine83/meta-beaglev-tcook.git
